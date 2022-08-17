@@ -1,0 +1,47 @@
+[
+    {
+        "casting_time": "1 minuto",
+        "level": [
+            {
+                "class": "Clérigo",
+                "level": "1"
+            },
+            {
+                "class": "Paladino",
+                "level": "1"
+            }
+        ],
+        "components": {
+            "material": true,
+            "required": [
+                "2,5kg de prata em pó (que valem 25 PO)."
+            ],
+            "raw": "V, G, M",
+            "somatic": true,
+            "verbal": true
+        },
+        "description": "Esta transmutação imbui um frasco (0,5 litro) de água com energia positiva, transformando-a em água benta (veja Livro do Jogador, p. 127).",
+        "duration": [
+            {
+                "type": "Instantânea"
+            }
+        ],
+        "name": "Abençoar Água",
+        "range": "Toque",
+        "school": [
+            {
+                "schoolName": "Transmutação",
+                "subSchool": "",
+                "descriptors": [
+                    {
+                        "alignmentMoral": "Bem"
+                    },
+                    {
+                        "alignmentMoral": "Bem"
+                    }
+                ]
+            }
+        ]
+    }
+    
+]
