@@ -21,6 +21,10 @@
             {
                 "class": "Clérigo",
                 "circle": "1"
+            },
+            {
+                "class": "Paladino",
+                "circle": "1"
             }
         ],
         "name": "Abençoar Água"
