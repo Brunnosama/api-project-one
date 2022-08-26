@@ -1,0 +1,21 @@
+{
+  "name": "spellbook-3.5-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node test.js",
+    "dev": "echo 'Olá bashClear' && node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brunnosama/spellbook-3.5-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brunnosama/spellbook-3.5-api/issues"
+  },
+  "homepage": "https://github.com/Brunnosama/spellbook-3.5-api#readme"
+}
