@@ -1,22 +1,7 @@
-app.post('/', function (req, res) {
-    res.semd('Hello World 1.2');
-});
+console.log("Olá Mundo !!!")
 
-app.post('/user', function (req, res) {
 
-    console.log(req)
+console.log(process.env.TESTE)
 
-    res.semd('Hello World 1.2');
-});
 
-    //PUT
-
-    //DELETE
-
-    //PATH
-
-//RESPONSE
-
-const listener = app.listen(porta, function () {
-    console.log("Node.js is listening on port " + listener.address().port);
-});
+console.log("Olá Mundo 2 !!!")
