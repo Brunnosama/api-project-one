@@ -17,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/Brunnosama/spellbook-3.5-api/issues"
   },
-  "homepage": "https://github.com/Brunnosama/spellbook-3.5-api#readme"
+  "homepage": "https://github.com/Brunnosama/spellbook-3.5-api#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
