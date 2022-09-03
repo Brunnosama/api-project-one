@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node test.js",
-    "dev": "echo 'Olá bashClear' && node test.js"
+    "start": "node index.js",
+    "dev": "echo 'Olá bashClear' && node index.js"
   },
   "repository": {
     "type": "git",
