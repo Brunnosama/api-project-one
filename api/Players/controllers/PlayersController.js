@@ -1,6 +1,30 @@
+const database = require("../../../dbConfig/db/models");
+
 class PlayersController {
     static async getAll(req, res) {
-        return res.send("ClassController");
+        try {
+            const allPlayers = await database.Players.findAll()
+            return res.status(200).send(allPlayers);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+
+    static async getOne(req, res) {
+        const {playerId} = req.params;
+        try {
+            const player = await database.Players.findOne({
+                where: {
+                    id: Number(playerId)
+                }
+            });
+            if(!player) {
+                return res.status(404).send("Player it's not registered. Try a new id.")
+            }
+            return res.status(200).send(player);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
     }
 }
 
