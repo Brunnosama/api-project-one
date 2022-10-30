@@ -11,15 +11,15 @@ class PlayersController {
     }
 
     static async getOne(req, res) {
-        const {playerId} = req.params;
+        const { playerId } = req.params;
         try {
             const player = await database.Players.findOne({
                 where: {
                     id: Number(playerId)
                 }
             });
-            if(!player) {
-                return res.status(404).send("Player it's not registered. Try a new id.")
+            if (!player) {
+                return res.status(404).send("Player is not registered. Try a new id.")
             }
             return res.status(200).send(player);
         } catch (error) {
@@ -28,12 +28,60 @@ class PlayersController {
     }
 
     static async createPlayer(req, res) {
-        const newPlayer = req.body
+        const { name, email, active, role } = req.body
         try {
-            const player = await database.Players.create(newPlayer)
-            return res.status(200).send({msg: "Player successfully created", ...player})
-        } catch {
+            const verifyingUser = await database.Players.findOne({
+                where: {
+                    email: email
+                }
+            });
+            if (verifyingUser) {
+                return res.status(409).send({ msg: "This user is already registered", verifyingUser });
+            }
+
+            const player = await database.Players.create({
+                name,
+                email,
+                active,
+                role
+            })
+            return res.status(200).send({ msg: "Player successfully created!", ...player })
+        } catch (error) {
             return res.status(500).send(error.message)
+        }
+    }
+    static async editPlayer(req, res) {
+        const { playerId } = req.params;
+        const newPlayer = req.body;
+        try {
+            await database.Players.update(newPlayer, {
+                where: {
+                    id: Number(playerId)
+                }
+            });
+
+            const updatePlayer = await database.Players.findOne({
+                where: {
+                    id: Number(playerId)
+                }
+            });
+            return res.status(200).send({ msg: "Player successfully updated!", ...updatePlayer });
+
+        } catch {
+            return res.status(500).send(error.message);
+        }
+    }
+    static async deletePlayer(req, res) {
+        const { playerId } = req.params;
+        try {
+            await database.Players.destroy({
+                where: {
+                    id: Number(playerId)
+                }
+            });
+            return res.status(200).send("Player successfully deleted!");
+        } catch {
+            return res.status(500).send(error.message);
         }
     }
 }
