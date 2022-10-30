@@ -26,6 +26,16 @@ class PlayersController {
             return res.status(500).send(error.message);
         }
     }
+
+    static async createPlayer(req, res) {
+        const newPlayer = req.body
+        try {
+            const player = await database.Players.create(newPlayer)
+            return res.status(200).send({msg: "Player successfully created", ...player})
+        } catch {
+            return res.status(500).send(error.message)
+        }
+    }
 }
 
 module.exports = PlayersController;

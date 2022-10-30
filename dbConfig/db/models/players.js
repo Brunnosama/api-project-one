@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Players.init({
     name: DataTypes.STRING,
+    email: DataTypes.STRING,
     active: DataTypes.BOOLEAN,
     role: DataTypes.ENUM('Player', 'Narrator')
   }, {

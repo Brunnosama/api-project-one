@@ -10,14 +10,16 @@ module.exports = {
     await queryInterface.bulkInsert('Players',
       [
         {
-          name: "Brunno",
+          name: "Brunno Pessoa",
+          email: "brunno.pessoa@rpg.com",
           active: true,
           role: "Player",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          name: "Igor",
+          name: "Igor Souza",
+          email: "igor.souza@rpg.com",
           active: true,
           role: "Narrator",
           createdAt: new Date(),
@@ -25,6 +27,7 @@ module.exports = {
         },
         {
           name: "Juliana",
+          email: "igor.souza@rpg.com",
           active: false,
           role: "Player",
           createdAt: new Date(),

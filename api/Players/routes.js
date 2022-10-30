@@ -4,5 +4,6 @@ const playersController = require("./controllers/PlayersController")
 
 route.get('/players', playersController.getAll);
 route.get('/player/:playerId', playersController.getOne);
+route.post('/player', playersController.createPlayer)
 
 module.exports = route;
