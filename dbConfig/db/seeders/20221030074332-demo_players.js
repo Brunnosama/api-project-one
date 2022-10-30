@@ -2,11 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:*/
+  async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Players',
       [
         {
@@ -26,18 +22,17 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          name: "Juliana",
-          email: "igor.souza@rpg.com",
-          active: false,
+          name: "Juliana Alves",
+          email: "juliana.alves@rpg.com",
+          active: true,
           role: "Player",
           createdAt: new Date(),
           updatedAt: new Date()
         }
       ], {});
-
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *

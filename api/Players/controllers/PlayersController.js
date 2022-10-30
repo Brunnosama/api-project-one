@@ -67,7 +67,7 @@ class PlayersController {
             });
             return res.status(200).send({ msg: "Player successfully updated!", ...updatePlayer });
 
-        } catch {
+        } catch (error) {
             return res.status(500).send(error.message);
         }
     }
@@ -80,7 +80,42 @@ class PlayersController {
                 }
             });
             return res.status(200).send("Player successfully deleted!");
-        } catch {
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+    static async getCharacter(req, res) {
+        const { player_id, character_id } = req.params;
+        try {
+            const oneCharacter = await database.Characters.findOne({
+                where: {
+                    id: Number(character_id),
+                    player_id: Number(player_id)
+                }
+            });
+            if (!oneCharacter) {
+                return res.status(404).send({ msgError: "Characters not find!" });
+            }
+            return res.status(200).send(oneCharacter);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+    static async createCharacter(req, res) {
+        const { player_id } = req.params;
+        const newCharacter = { ...req.body, player_id: Number(player_id) };
+        try {
+            const verifyingPlayer = await database.Characters.findOne({
+                where: {
+                    player_id: Number(player_id)
+                }
+            })
+            if (!verifyingPlayer) {
+                return res.status(400).send({ msgError: "Character already registered!" });
+            }
+            const createdCharacter = await database.Characters.create(newCharacter)
+            return res.status(200).send({ msgSuccess: "Character successfully registered!", ...createdCharacter })
+        } catch (error) {
             return res.status(500).send(error.message);
         }
     }
