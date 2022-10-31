@@ -22,6 +22,34 @@ class SessionsController {
             return res.status(500).send(error.message);
         }
     }
+    static async createSession(req, res) {
+        const newSession = req.body
+        try {
+            const newCreatedSession = await database.Sessions.create(newSession)
+            return res.status(200).send(newCreatedSession);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+    static async editSession(req, res) {
+        const { session_id } = req.params;
+        const newSessionInfo = req.body
+        try {
+            await database.Sessions.update(newSessionInfo, {
+                where: {
+                    id: Number(session_id)
+                }
+            });
+            const updatedSession = await database.Sessions.findOne({
+                where: {
+                    id: Number(session_id)
+                }
+            })
+            return res.status(200).send(updatedSession);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
 
 
 }
