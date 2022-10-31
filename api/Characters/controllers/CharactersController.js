@@ -1,7 +1,13 @@
-class CharacterController {
+const database = require("../../../dbConfig/db/models");
+class CharactersController {
     static async getAll(req, res) {
-        return res.send("ClassController");
+        try {
+            const allCharacters = await database.Characters.findAll()
+            return res.status(200).send(allCharacters);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
     }
 }
 
-module.exports = CharacterController;
+module.exports = CharactersController;
