@@ -50,7 +50,27 @@ class SessionsController {
             return res.status(500).send(error.message);
         }
     }
-
+    static async deleteSession(req, res) {
+        const { session_id } = req.params;
+        try {
+            const verifyingDeletion = await database.Sessions.findOne({
+                where: {
+                    id: Number(session_id)
+                }
+            })
+            if (!verifyingDeletion) {
+                return res.status(400).send({ msg: "Session couldn't be found!"});
+            }
+            await database.Sessions.destroy({
+                where: {
+                    id: Number(session_id)
+                }
+            });
+            return res.status(200).send({ msg: "Session successfully deleted!" });
+        } catch (error) {
+            return res.status(500).send({ msg: "Session delete failed!", error: error.message })
+        }
+    }
 
 }
 
