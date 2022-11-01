@@ -28,8 +28,8 @@ class CharactersController {
     }
 
     static async createCharacter(req, res) {
-        const { player_id, session_id } = req.params;
-        const newCharacter = { ...req.body, player_id: Number(player_id) };
+        const { player_id, session_id, name } = req.params;
+        const newCharacter = { ...req.body, player_id: Number(player_id)};
         try {
             const verifyingSession = await database.Characters.findOne({
                 where: {
