@@ -35,8 +35,8 @@ class PlayersController {
                     player_id: Number(player_id)
                 }
             });
-            if (!charactersOfPlayer) {
-                return res.status(400).send({ msgError: "This player has no Characters!" });
+            if (charactersOfPlayer.length <= 0) {
+                return res.status(404).send({ msgError: "This Player has no Characters!" });
             }
             return res.status(200).send(charactersOfPlayer);
         } catch (error) {
@@ -52,8 +52,8 @@ class PlayersController {
                     narrator_id: Number(player_id)
                 }
             });
-            if (!sessionsOfPlayer) {
-                return res.status(400).send({ msgError: "This player has no sessions!" });
+            if (sessionsOfPlayer.length <= 0) {
+                return res.status(404).send({ msgError: "This Narrator has no Sessions!" });
             }
             return res.status(200).send(sessionsOfPlayer);
         } catch (error) {
