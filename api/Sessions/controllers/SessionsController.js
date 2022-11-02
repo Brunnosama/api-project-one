@@ -22,6 +22,23 @@ class SessionsController {
             return res.status(500).send(error.message);
         }
     }
+    static async getCharactersBySession(req, res) {
+        const { session_id } = req.params;
+        try {
+            const charactersOfSessions = await database.Characters.findAll({
+                where: {
+                    session_id: Number(session_id)
+                }
+            });
+            if (charactersOfSessions.length <= 0) {
+                return res.status(404).send({ msgError: "This Sessions has no Characters!" });
+            }
+            return res.status(200).send(charactersOfSessions);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+
     static async createSession(req, res) {
         const newSession = req.body
         try {

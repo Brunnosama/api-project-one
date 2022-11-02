@@ -5,6 +5,7 @@ const SessionsController = require("./controllers/SessionsController")
 //Players
 route.get('/sessions', SessionsController.getAllSessions);
 route.get('/session/:session_id', SessionsController.getOneSession);
+route.get('/characters-of-session/:session_id', SessionsController.getCharactersBySession);
 route.post('/session', SessionsController.createSession);
 route.put('/session/:session_id', SessionsController.editSession);
 route.delete('/delete-session/:session_id', SessionsController.deleteSession)
