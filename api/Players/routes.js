@@ -10,6 +10,7 @@ route.get('/sessions-of-player/:player_id', PlayersController.getSessionsByPlaye
 route.post('/player', PlayersController.createPlayer);
 route.put('/edit-player/:player_id', PlayersController.editPlayer);
 route.delete('/delete-player/:player_id', PlayersController.deletePlayer);
+route.post('/restore-player/:player_id', PlayersController.restorePlayer);
 
 
 

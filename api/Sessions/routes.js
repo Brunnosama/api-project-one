@@ -9,5 +9,6 @@ route.get('/characters-of-session/:session_id', SessionsController.getCharacters
 route.post('/session', SessionsController.createSession);
 route.put('/session/:session_id', SessionsController.editSession);
 route.delete('/delete-session/:session_id', SessionsController.deleteSession)
+route.post('/restore-session/:session_id', SessionsController.restoreSession)
 
 module.exports = route;
