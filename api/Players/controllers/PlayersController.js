@@ -14,7 +14,8 @@ class PlayersController {
         const { player_id } = req.params;
         try {
             const player = await database.Players.findOne({
-                where: {id: Number(player_id)}
+                where: {id: Number(player_id)},
+                active: false
             });
             if (!player) {
                 return res.status(404).send("Player is not registered. Try a new id.")
