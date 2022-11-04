@@ -1,10 +1,34 @@
 const database = require("../../../dbConfig/db/models");
 
 class PlayersController {
+    static async getAllActivePlayers(req, res) {
+        try {
+            const allActive = await database.Players.findAll()
+            return res.status(200).send(allActive);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+
     static async getAllPlayers(req, res) {
         try {
-            const allPlayers = await database.Players.findAll()
+            const allPlayers = await database.Players.scope("allPlayers").findAll()
             return res.status(200).send(allPlayers);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+
+    static async getOneActivePlayer(req, res) {
+        const { player_id } = req.params;
+        try {
+            const activePlayer = await database.Players.findOne({
+                where: { id: Number(player_id) }
+            });
+            if (!activePlayer) {
+                return res.status(404).send("Player is not registered. Try a new id.")
+            }
+            return res.status(200).send(activePlayer);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -13,9 +37,8 @@ class PlayersController {
     static async getOnePlayer(req, res) {
         const { player_id } = req.params;
         try {
-            const player = await database.Players.findOne({
-                where: {id: Number(player_id)},
-                active: false
+            const player = await database.Players.scope("allPlayers").findOne({
+                where: { id: Number(player_id) }
             });
             if (!player) {
                 return res.status(404).send("Player is not registered. Try a new id.")
@@ -30,7 +53,7 @@ class PlayersController {
         const { player_id } = req.params;
         try {
             const charactersOfPlayer = await database.Characters.findAll({
-                where: {player_id: Number(player_id)}
+                where: { player_id: Number(player_id) }
             });
             if (charactersOfPlayer.length <= 0) {
                 return res.status(404).send({ msgError: "This Player has no Characters!" });
@@ -45,7 +68,7 @@ class PlayersController {
         const { player_id } = req.params;
         try {
             const sessionsOfPlayer = await database.Sessions.findAll({
-                where: {narrator_id: Number(player_id)}
+                where: { narrator_id: Number(player_id) }
             });
             if (sessionsOfPlayer.length <= 0) {
                 return res.status(404).send({ msgError: "This Narrator has no Sessions!" });
@@ -60,7 +83,7 @@ class PlayersController {
         const { name, email, active, role } = req.body
         try {
             const verifyingUser = await database.Players.findOne({
-                where: {email: email}
+                where: { email: email }
             });
             if (verifyingUser) {
                 return res.status(409).send({ msg: "This user is already registered", verifyingUser });
@@ -83,11 +106,11 @@ class PlayersController {
         const newPlayer = req.body;
         try {
             await database.Players.update(newPlayer, {
-                where: {id: Number(player_id)}
+                where: { id: Number(player_id) }
             });
 
             const updatePlayer = await database.Players.findOne({
-                where: {id: Number(player_id)}
+                where: { id: Number(player_id) }
             });
             return res.status(200).send({ msg: "Player successfully updated!", ...updatePlayer });
 
@@ -100,13 +123,13 @@ class PlayersController {
         const { player_id } = req.params;
         try {
             const verifyingDeletion = await database.Players.findOne({
-                where: {id: Number(player_id)}
+                where: { id: Number(player_id) }
             })
             if (!verifyingDeletion) {
                 return res.status(404).send({ msg: "Player couldn't be found!" });
             }
             await database.Players.destroy({
-                where: {id: Number(player_id)}
+                where: { id: Number(player_id) }
             });
             return res.status(200).send({ msg: "Player successfully deleted!" });
         } catch (error) {
@@ -117,14 +140,14 @@ class PlayersController {
         const { player_id } = req.params;
         try {
             const verifyingRestore = await database.Players.findOne({
-                where: {id: Number(player_id)},
+                where: { id: Number(player_id) },
                 paranoid: false
             })
             if (!verifyingRestore) {
-                return res.status(404).send({ msg: "Player couldn't be found!"});
+                return res.status(404).send({ msg: "Player couldn't be found!" });
             }
             await database.Players.restore({
-                where: {id: Number(player_id)}
+                where: { id: Number(player_id) }
             });
             return res.status(200).send({ msg: "Player successfully restored!" });
         } catch (error) {

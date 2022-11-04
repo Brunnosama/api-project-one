@@ -31,6 +31,15 @@ module.exports = (sequelize, DataTypes) => {
       where: {
         active: true
       }
+    },
+    scopes: {
+      allPlayers: {
+        where: {
+          active: false
+        } & {
+          active: true
+        }
+      }
     }
   });
   return Players;
