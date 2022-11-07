@@ -13,7 +13,7 @@ class SessionsController {
         const { session_id } = req.params;
         try {
             const oneSession = await database.Sessions.findOne({
-                where: {id: Number(session_id)}
+                where: { id: Number(session_id) }
             });
             return res.status(200).send(oneSession);
         } catch (error) {
@@ -24,12 +24,34 @@ class SessionsController {
         const { session_id } = req.params;
         try {
             const charactersOfSessions = await database.Characters.findAll({
-                where: {session_id: Number(session_id)}
+                where: { session_id: Number(session_id) }
             });
             if (charactersOfSessions.length <= 0) {
                 return res.status(404).send({ msgError: "This Sessions has no Characters!" });
             }
             return res.status(200).send(charactersOfSessions);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+
+    static async getCharactersPerSession(req, res) {
+        const { session_id } = req.params;
+        try {
+            const selectedSession = await database.Sessions.findOne({
+                where: {
+                    id: Number(session_id)
+                }
+            });
+
+            const charactersOfSession = await selectedSession.getCharactersofSession();
+            if (!selectedSession) {
+                return res.status(203).send({ msgError: "Session couldn't be found" });
+            }
+            if (charactersOfSession.length <= 0) {
+                return res.status(404).send({ msgError: "This Sessions has no Characters!" });
+            }
+            return res.status(200).send(charactersOfSession);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -49,10 +71,10 @@ class SessionsController {
         const newSessionInfo = req.body
         try {
             await database.Sessions.update(newSessionInfo, {
-                where: {id: Number(session_id)}
+                where: { id: Number(session_id) }
             });
             const updatedSession = await database.Sessions.findOne({
-                where: {id: Number(session_id)}
+                where: { id: Number(session_id) }
             })
             return res.status(200).send(updatedSession);
         } catch (error) {
@@ -63,13 +85,13 @@ class SessionsController {
         const { session_id } = req.params;
         try {
             const verifyingDeletion = await database.Sessions.findOne({
-                where: {id: Number(session_id)}
+                where: { id: Number(session_id) }
             })
             if (!verifyingDeletion) {
-                return res.status(404).send({ msg: "Session couldn't be found!"});
+                return res.status(404).send({ msg: "Session couldn't be found!" });
             }
             await database.Sessions.destroy({
-                where: {id: Number(session_id)}
+                where: { id: Number(session_id) }
             });
             return res.status(200).send({ msg: "Session successfully deleted!" });
         } catch (error) {
@@ -80,14 +102,14 @@ class SessionsController {
         const { session_id } = req.params;
         try {
             const verifyingRestore = await database.Sessions.findOne({
-                where: {id: Number(session_id)},
+                where: { id: Number(session_id) },
                 paranoid: false
             })
             if (!verifyingRestore) {
-                return res.status(404).send({ msg: "Session couldn't be found!"});
+                return res.status(404).send({ msg: "Session couldn't be found!" });
             }
             await database.Sessions.restore({
-                where: {id: Number(session_id)}
+                where: { id: Number(session_id) }
             });
             return res.status(200).send({ msg: "Session successfully restored!" });
         } catch (error) {

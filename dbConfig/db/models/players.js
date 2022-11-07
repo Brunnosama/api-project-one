@@ -20,9 +20,25 @@ module.exports = (sequelize, DataTypes) => {
   }
   Players.init({
     name: DataTypes.STRING,
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: "Invalid e-mail!"
+        }
+      }
+    },
     active: DataTypes.BOOLEAN,
-    role: DataTypes.ENUM('Player', 'Narrator')
+    role: {
+      type: DataTypes.ENUM('Player', 'Narrator'),
+      validate: {
+        isIn: {
+          args: [['Player', 'Narrator']],
+          msg: "Choose if you'll be a 'Player' or a 'Narrator'"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Players',
@@ -33,12 +49,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     scopes: {
-      allPlayers: {
-        where: {
-          active: false
-        } & {
-          active: true
-        }
+      all: {
+        where: {}
       }
     }
   });

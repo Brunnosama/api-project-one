@@ -1,4 +1,6 @@
 const database = require("../../../dbConfig/db/models");
+const validator = require(`validator`);
+const { MissingEmailException, InvalidRolePlayerException, InvalidRoleNarratorException } = require("../common/exceptions");
 
 class PlayersController {
     static async getAllActivePlayers(req, res) {
@@ -12,7 +14,7 @@ class PlayersController {
 
     static async getAllPlayers(req, res) {
         try {
-            const allPlayers = await database.Players.scope("allPlayers").findAll()
+            const allPlayers = await database.Players.scope("all").findAll()
             return res.status(200).send(allPlayers);
         } catch (error) {
             return res.status(500).send(error.message);
@@ -37,7 +39,7 @@ class PlayersController {
     static async getOnePlayer(req, res) {
         const { player_id } = req.params;
         try {
-            const player = await database.Players.scope("allPlayers").findOne({
+            const player = await database.Players.scope("all").findOne({
                 where: { id: Number(player_id) }
             });
             if (!player) {
@@ -80,7 +82,16 @@ class PlayersController {
     }
 
     static async createPlayer(req, res) {
-        const { name, email, active, role } = req.body
+        const { name, email, active, role } = req.body;
+        
+        const hasEmail = validator.hasEmail(email);
+        const isPlayer = validator.contains(role, ["Player"]);
+        const isNarrator = validator.contains(role, ["Narrator"]);
+
+        if (!hasEmail) throw new MissingEmailException();
+        if (!isPlayer) throw new InvalidRolePlayerException();
+        if (!isNarrator) throw new InvalidRoleNarratorException();
+
         try {
             const verifyingUser = await database.Players.findOne({
                 where: { email: email }

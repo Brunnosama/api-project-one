@@ -11,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Sessions.hasMany(models.Characters, {
-        foreignKey: "session_id"
+        foreignKey: "session_id",
+        scope: {
+          session_id: !null,
+        },
+        as: "charactersofSession"
       });
       Sessions.belongsTo(models.Players, {
         foreignKey: "narrator_id"
