@@ -21,7 +21,19 @@ module.exports = (sequelize, DataTypes) => {
   Characters.init({
     name: DataTypes.STRING,
     character_class: DataTypes.STRING,
-    level: DataTypes.INTEGER
+    level: {
+      type: DataTypes.INTEGER,
+      validate: {
+        min: {
+          args: [[1]],
+          msg: "Characters should start from level 1"
+        },
+        max: {
+          args: [[20]],
+          msg: "Characters can't have more than 20 levels"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Characters',

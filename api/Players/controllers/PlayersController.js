@@ -1,5 +1,5 @@
 const database = require("../../../dbConfig/db/models");
-const validator = require(`validator`);
+const validator = require('validator');
 const { MissingEmailException, InvalidRolePlayerException, InvalidRoleNarratorException } = require("../common/exceptions");
 
 class PlayersController {
@@ -83,15 +83,6 @@ class PlayersController {
 
     static async createPlayer(req, res) {
         const { name, email, active, role } = req.body;
-        
-        const hasEmail = validator.hasEmail(email);
-        const isPlayer = validator.contains(role, ["Player"]);
-        const isNarrator = validator.contains(role, ["Narrator"]);
-
-        if (!hasEmail) throw new MissingEmailException();
-        if (!isPlayer) throw new InvalidRolePlayerException();
-        if (!isNarrator) throw new InvalidRoleNarratorException();
-
         try {
             const verifyingUser = await database.Players.findOne({
                 where: { email: email }
@@ -168,59 +159,3 @@ class PlayersController {
 }
 
 module.exports = PlayersController;
-
-// const sum = (a, b) => {
-//     let sum = a + b;
-//     return sum;
-// };
-
-// const name = (name) => {
-//     let fullName = name + " Pessoa"
-//     return fullName;
-// };
-
-// const verifyItems = (arr) => {
-//     let newArr = arr.map((item) => item);
-//     for (let index = 0; index <= newArr.length; index++) {
-//         if (!newArr[index]) {
-//             return false
-//         }
-//         return newArr[index];
-//     }
-//     return newArr;
-// };
-
-// const page1 = (req, res) => {
-//     res.send("Page1");
-// };
-
-// const testReq = (req, res) => {
-//     const { id } = req.params
-//     if (!id) {
-//         return res.send("Invalid Id")
-//     }
-//     if (id === 1) {
-//         return res.send(`The Id is equal to: ${id}`)
-//     } else {
-//         return res.send(`The id it's not equal to: ${1}`)
-//     }
-// };
-
-// const testQueryString = (req, res) => {
-//     const { num1, num2 } = req.query;
-
-//     if (num1 && num2) {
-//         res.status(200);
-//         return res.send("The params are correct");
-//     }
-//     return res.send("The params are not true");
-// }
-
-// module.exports = {
-//     sum,
-//     name,
-//     verifyItems,
-//     page1,
-//     testReq,
-//     testQueryString
-// };
