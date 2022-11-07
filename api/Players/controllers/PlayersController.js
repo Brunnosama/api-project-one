@@ -1,11 +1,14 @@
 const database = require("../../../dbConfig/db/models");
 const validator = require('validator');
-const { MissingEmailException, InvalidRolePlayerException, InvalidRoleNarratorException } = require("../common/exceptions");
+//TODO
+const ModelService = require("../services/model.service")
+const playersServices = new ModelService("Players");
+// const { MissingEmailException, InvalidRolePlayerException, InvalidRoleNarratorException } = require("../common/exceptions");
 
 class PlayersController {
     static async getAllActivePlayers(req, res) {
         try {
-            const allActive = await database.Players.findAll()
+            const allActive = await playersServices.getActiveDetails();
             return res.status(200).send(allActive);
         } catch (error) {
             return res.status(500).send(error.message);
@@ -14,7 +17,7 @@ class PlayersController {
 
     static async getAllPlayers(req, res) {
         try {
-            const allPlayers = await database.Players.scope("all").findAll()
+            const allPlayers = await playersServices.getAllDetails();
             return res.status(200).send(allPlayers);
         } catch (error) {
             return res.status(500).send(error.message);
@@ -24,9 +27,7 @@ class PlayersController {
     static async getOneActivePlayer(req, res) {
         const { player_id } = req.params;
         try {
-            const activePlayer = await database.Players.findOne({
-                where: { id: Number(player_id) }
-            });
+            const activePlayer = await playersServices.getOneActiveDetail(player_id);
             if (!activePlayer) {
                 return res.status(404).send("Player is not registered. Try a new id.")
             }
@@ -39,9 +40,7 @@ class PlayersController {
     static async getOnePlayer(req, res) {
         const { player_id } = req.params;
         try {
-            const player = await database.Players.scope("all").findOne({
-                where: { id: Number(player_id) }
-            });
+            const player = await playersServices.getOneDetail(player_id);
             if (!player) {
                 return res.status(404).send("Player is not registered. Try a new id.")
             }
